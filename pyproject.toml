@@ -58,6 +58,11 @@ features = [
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:pure_graph_of_thoughts}"
 
+[tool.hatch.build]
+include = [
+    "pure_graph_of_thoughts/py.typed"
+]
+
 [tool.hatch.build.targets.sdist]
 exclude = [
     ".github/",
