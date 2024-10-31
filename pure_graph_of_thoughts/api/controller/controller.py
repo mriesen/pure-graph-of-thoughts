@@ -110,7 +110,7 @@ class Controller(ABC):
         """
         self._logger.debug('Processing score operation %s', score_operation)
         if isinstance(score_operation, ScorePromptOperation):
-            input_state = score_operation.transform_before(current_state)
+            input_state = score_operation.transform_before(previous_cumulative_score, previous_state, current_state)
             output_state = self._language_model.prompt(score_operation.prompt, input_state)
             score = score_operation.transform_after(output_state)
             cumulative_score = previous_cumulative_score + score

@@ -68,7 +68,9 @@ class ScorePromptOperation(ScoreOperation):
     prompt: Prompt
     """The score prompt"""
 
-    transform_before: Callable[[State], State] = field(default=lambda state: state)
+    transform_before: Callable[[float, State, State], State] = field(
+            default=lambda previous_cumulative_score, previous_state, current_state: current_state
+    )
     """The transformation function applied on the input"""
 
     transform_after: Callable[[State], float] = field(default=lambda state: float(state['score']))
