@@ -40,6 +40,13 @@ pip install pure-graph-of-thoughts[visualization,dot-visualization]
 ```
 Be aware that `dot-visualization` requires the [GraphViz](https://graphviz.org/) library to be installed.
 
+##### pygraphviz on Windows
+The Python package `pygraphviz` (included in `dot-visualization`) may cause installation problems on Windows.
+Installing it separately with the following options (including the GraphViz headers) resolves the problem:
+```shell
+python -m pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-IC:\Program Files\Graphviz\include" --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" pygraphviz
+```
+
 #### Examples
 An example task definition is provided together with a notebook 
 that shows the graph construction and execution.
