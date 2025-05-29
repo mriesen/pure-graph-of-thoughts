@@ -1,3 +1,5 @@
+from typing import Sequence
+
 from pure_graph_of_thoughts.api.language_model import Prompt, Example
 from pure_graph_of_thoughts.api.operation import PromptOperation, OperationType, ScoreExecOperation, \
     relative_complexity, absolute_complexity
@@ -71,12 +73,13 @@ op_merge = PromptOperation(
 )
 
 
-def score_op_sum(cumulative_score: float, previous_state: State, current_state: State) -> float:
+def score_op_sum(cumulative_score: float, previous_state: State, current_state: State, output_states: Sequence[State]) -> float:
     """
     Determines the score of the sum operation.
     :param cumulative_score: cumulative score
     :param previous_state: previous state
     :param current_state: current state
+    :param output_states: all output states or the operation
     :return: score
     """
     if cumulative_score < 0.0:
