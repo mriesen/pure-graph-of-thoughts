@@ -54,7 +54,7 @@ class ScoreExecOperation(ScoreOperation):
     The score is calculated by executing a defined score function.
     """
 
-    score: Callable[[float, State, State], float]
+    score: Callable[[float, State, State, Sequence[State]], float]
     """The score function."""
 
 
@@ -68,8 +68,8 @@ class ScorePromptOperation(ScoreOperation):
     prompt: Prompt
     """The score prompt"""
 
-    transform_before: Callable[[float, State, State], State] = field(
-            default=lambda previous_cumulative_score, previous_state, current_state: current_state
+    transform_before: Callable[[float, State, State, Sequence[State]], State] = field(
+            default=lambda previous_cumulative_score, previous_state, current_state, output_states: current_state
     )
     """The transformation function applied on the input"""
 

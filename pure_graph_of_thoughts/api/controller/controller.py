@@ -72,12 +72,13 @@ class Controller(ABC):
 
         if isinstance(operation, PromptOperation):
             input_state = operation.transform_before(input_states)
-            output_state = self._language_model.prompt(operation.prompt, input_state)
-            output_states = operation.transform_after(output_state)
+            raw_output_state = self._language_model.prompt(operation.prompt, input_state)
+            output_states = operation.transform_after(raw_output_state)
             if operation.is_scorable and operation.score_operation is not None:
+                # TODO: score based on complete output state instead of partial ones
                 return [
                     self._process_score_operation(
-                            operation.score_operation, operation_node, cumulative_score, input_state, output_state
+                            operation.score_operation, operation_node, cumulative_score, input_state, output_state, output_states
                     )
                     for output_state in output_states
                 ]
@@ -97,7 +98,8 @@ class Controller(ABC):
             operation_node: OperationNode,
             previous_cumulative_score: float,
             previous_state: State,
-            current_state: State
+            current_state: State,
+            output_states: Sequence[State]
     ) -> Thought:
         """
         Processes a score operation for a given operation node with the previous and current state as input.
@@ -106,11 +108,12 @@ class Controller(ABC):
         :param previous_cumulative_score: cumulative score from previous thoughts
         :param previous_state: state of previous thought
         :param current_state: state of current thought
+        :param output_states: all output states from the operation
         :return: scored thought
         """
         self._logger.debug('Processing score operation %s', score_operation)
         if isinstance(score_operation, ScorePromptOperation):
-            input_state = score_operation.transform_before(previous_cumulative_score, previous_state, current_state)
+            input_state = score_operation.transform_before(previous_cumulative_score, previous_state, current_state, output_states)
             output_state = self._language_model.prompt(score_operation.prompt, input_state)
             score = score_operation.transform_after(output_state)
             cumulative_score = previous_cumulative_score + score
@@ -121,7 +124,7 @@ class Controller(ABC):
                     origin_id=operation_node.id
             )
         elif isinstance(score_operation, ScoreExecOperation):
-            score = score_operation.score(previous_cumulative_score, previous_state, current_state)
+            score = score_operation.score(previous_cumulative_score, previous_state, current_state, output_states)
             cumulative_score = previous_cumulative_score + score
             return Thought(
                     state=current_state,
