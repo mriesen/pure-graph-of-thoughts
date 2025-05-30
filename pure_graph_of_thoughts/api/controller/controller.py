@@ -75,7 +75,6 @@ class Controller(ABC):
             raw_output_state = self._language_model.prompt(operation.prompt, input_state)
             output_states = operation.transform_after(raw_output_state)
             if operation.is_scorable and operation.score_operation is not None:
-                # TODO: score based on complete output state instead of partial ones
                 return [
                     self._process_score_operation(
                             operation.score_operation, operation_node, cumulative_score, input_state, output_state, output_states
