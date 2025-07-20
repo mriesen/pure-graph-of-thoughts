@@ -19,7 +19,7 @@ maintainers = [
 ]
 description = "Pure Graph of Thoughts"
 readme = "README.md"
-license-files = { paths = ["LICENSE"] }
+license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",

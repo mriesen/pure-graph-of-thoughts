@@ -44,7 +44,7 @@ Be aware that `dot-visualization` requires the [GraphViz](https://graphviz.org/)
 The Python package `pygraphviz` (included in `dot-visualization`) may cause installation problems on Windows.
 Installing it separately with the following options (including the GraphViz headers) resolves the problem:
 ```shell
-python -m pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-IC:\Program Files\Graphviz\include" --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" pygraphviz
+pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-IC:\Program Files\Graphviz\include" --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" pygraphviz
 ```
 
 #### Examples
