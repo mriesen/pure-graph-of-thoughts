@@ -2,7 +2,7 @@ import copy
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import TypeVar, Generic, Self, Set, Tuple, Sequence, Dict, List, Mapping, Type, Any
+from typing import TypeVar, Generic, Self, Tuple, Sequence, Dict, List, Mapping, Type, Any
 
 from .graph_schema import GraphSchema
 from .node import Node
@@ -32,20 +32,20 @@ class Graph(Sealable, ABC, Generic[N, S]):
         return self._source
 
     @property
-    def nodes(self) -> Set[N]:
+    def nodes(self) -> Sequence[N]:
         """
         Returns all nodes in the graph.
         :return: all nodes
         """
-        return set(self._get_nodes(self.source))
+        return list(dict.fromkeys(self._get_nodes(self.source)))
 
     @property
-    def edges(self) -> Set[Tuple[N, N]]:
+    def edges(self) -> Sequence[Tuple[N, N]]:
         """
         Returns all the edges in the graph.
         :return: all edges
         """
-        return set(self._get_edges(self.source))
+        return list(dict.fromkeys(self._get_edges(self.source)))
 
     @property
     def sinks(self) -> Sequence[N]:
