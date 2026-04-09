@@ -28,6 +28,14 @@ Alternatively, the package can be installed from source.
 ### Optional Dependencies
 The project comes with optional dependencies which are required for some features.
 
+#### Language Models
+
+The package `language_models` contains implementation of the language model API.
+the optional `languagemodel` dependencies are required.
+```shell
+pip install pure-graph-of-thoughts[languagemodel]
+```
+
 #### Graph Visualization
 To visualize the graphs by using `pure_graph_of_thoughts.visualization`, 
 the optional `visualization` dependencies are required.
