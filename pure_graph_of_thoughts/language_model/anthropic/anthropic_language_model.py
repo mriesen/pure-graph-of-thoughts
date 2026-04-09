@@ -16,6 +16,7 @@ from ...api.state import State
 
 _JSON_PREFIX = '```json'
 _JSON_SUFFIX = '```'
+_SYSTEM_PROMPT = 'Only answer in JSON with the schema described by the examples.'
 
 class AnthropicLanguageModel(LanguageModel):
     """
@@ -66,6 +67,7 @@ class AnthropicLanguageModel(LanguageModel):
         self._logger.debug('Calling Anthropic API with prompt %s and state %s', prompt, state)
         response = self._client.messages.create(
                 model=self._model.id,
+                system=_SYSTEM_PROMPT,
                 messages=[{'role': 'user', 'content': prompt.for_input(state)}],
                 temperature=self._temperature,
                 max_tokens=self._max_tokens
@@ -92,7 +94,6 @@ class AnthropicLanguageModel(LanguageModel):
                     content = content.removeprefix(_JSON_PREFIX)
                 if content.endswith(_JSON_SUFFIX):
                     content = content.removesuffix(_JSON_SUFFIX)
-            print(content)
             return cast(State, json.loads(content.strip()))
         raise LanguageModelException('Response content is None or not a text block')
 
