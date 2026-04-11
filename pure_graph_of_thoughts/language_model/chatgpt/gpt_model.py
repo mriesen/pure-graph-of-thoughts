@@ -9,6 +9,7 @@ class GPTModel(Enum):
     GPT_35_TURBO_0125 = 'gpt-3.5-turbo-0125'
     GPT_35_TURBO_1106 = 'gpt-3.5-turbo-1106'
     GPT_4_TURBO_2024_04_09 = 'gpt-4-turbo-2024-04-09'
+    GPT_54 = 'gpt-5.4'
 
     @property
     def id(self) -> str:

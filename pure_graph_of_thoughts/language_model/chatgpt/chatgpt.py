@@ -54,6 +54,27 @@ class ChatGPT(LanguageModel):
                 api_key=api_key
         )
 
+    def _call_common_api(self, prompt: Prompt, state: State) -> ChatCompletion:
+        return self._client.chat.completions.create(
+            model=self._model.id,
+            messages=[{'role': 'user', 'content': prompt.for_input(state)}],
+            temperature=self._temperature,
+            max_tokens=self._max_tokens,
+            response_format={'type': 'json_object'},
+            seed=self._seed,
+            n=1
+        )
+
+    def _call_gpt54_api(self, prompt: Prompt, state: State) -> ChatCompletion:
+        return self._client.chat.completions.create(
+            model=self._model.id,
+            messages=[{'role': 'user', 'content': prompt.for_input(state)}],
+            temperature=self._temperature,
+            response_format={'type': 'json_object'},
+            seed=self._seed,
+            n=1
+        )
+
     @backoff.on_exception(
             backoff.expo, RateLimitError, logger=Self.__class__.__name__, max_time=30, max_tries=3, factor=10
     )
@@ -65,15 +86,7 @@ class ChatGPT(LanguageModel):
         :return: output state
         """
         self._logger.debug('Calling OpenAI API with prompt %s and state %s', prompt, state)
-        response: ChatCompletion = self._client.chat.completions.create(
-                model=self._model.id,
-                messages=[{'role': 'user', 'content': prompt.for_input(state)}],
-                temperature=self._temperature,
-                max_tokens=self._max_tokens,
-                response_format={'type': 'json_object'},
-                seed=self._seed,
-                n=1
-        )
+        response: ChatCompletion = self._call_gpt54_api(prompt, state) if self._model == GPTModel.GPT_54 else self._call_common_api(prompt, state)
         if (
                 response.usage is None
                 or response.usage.prompt_tokens is None

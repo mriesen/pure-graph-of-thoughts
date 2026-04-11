@@ -39,6 +39,11 @@ _gpt_costs: Sequence[GPTCost] = [
             prompt_token_cost=10.0 / 1_000_000,
             completion_token_cost=30.00 / 1_000_000
     ),
+    GPTCost(
+        model=GPTModel.GPT_54,
+        prompt_token_cost=2.5 / 1_000_000,
+        completion_token_cost=15.00 / 1_000_000
+    ),
 ]
 
 gpt_costs_by_model: Mapping[GPTModel, GPTCost] = {
